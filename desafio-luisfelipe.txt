@@ -1,0 +1,410 @@
+Nome: Luis Felipe Oliveira dos Santos
+
+Questão 1)
+SOLUÇÃO UTILIZANDO DELPHI
+
+  
+  program ImprimirSequencia;
+
+
+{$APPTYPE CONSOLE}
+
+
+uses
+  SysUtils;
+
+
+// Função para gerar a sequência de números e formatar em uma string
+function GerarSequencia(n: Integer): string;
+var
+  linha, i: Integer;
+  resultado: string;
+begin
+  // Verifica se o valor inserido é inválido
+  if n <= 0 then
+  begin
+    Result := 'Valor inválido. Insira um valor maior que zero.';
+    Exit; // Encerra a função, se o valor for inválido
+  end;
+
+
+  resultado := ''; // Inicializa a string onde o resultado será montado
+
+
+  // Loop para percorrer as linhas da sequência
+  for linha := n downto 1 do
+  begin
+    // Loop para percorrer os números em cada linha
+    for i := linha downto 1 do
+    begin
+      resultado := resultado + IntToStr(i * i); // Adiciona o número à string de resultado utilizando a lógica de n^2
+      if i > 1 then
+        resultado := resultado + ' ' // Adiciona espaço entre os números, exceto o último
+      else
+        resultado := resultado + sLineBreak; // Adiciona quebra de linha após cada linha de números
+    end;
+  end;
+
+
+  Result := resultado; // Retorna a sequência gerada na forma de uma string
+end;
+
+
+var
+  numLinhas: Integer;
+  sequencia: string;
+begin
+  Write('Digite o número de linhas: ');
+  ReadLn(numLinhas);
+
+
+  // Gera a sequência usando a função e armazena na variável 'sequencia'
+  sequencia := GerarSequencia(numLinhas);
+
+
+  // Exibe a sequência no console
+  WriteLn(sequencia);
+  Readln;
+end.
+
+
+
+
+  
+
+
+QUESTÃO 2)
+Resposta utilizando a linguagem DELPHI
+program Project1;
+
+uses
+  SysUtils;
+
+
+function CompactarString(const entradaStr: string): string;
+var
+  i, contador: Integer;
+begin
+  Result := '';
+
+
+  i := 1;
+  while i <= Length(entradaStr) do
+  begin
+    Result := Result + entradaStr[i]; // Adiciona o caractere atual à string de resultado
+    contador := 1;
+
+
+    // Conta quantas vezes o caractere atual se repete em sequência
+    while (i + contador <= Length(entradaStr)) and (entradaStr[i] = entradaStr[i + contador]) do
+      Inc(contador);
+
+
+    Result := Result + IntToStr(contador); // Adiciona a contagem à string de resultado
+    Inc(i, contador); // Move para o próximo caractere após a sequência repetida
+  end;
+end;
+
+
+var
+  entrada: string;
+  compactada: string;
+begin
+  Write('Digite a string a ser compactada: ');
+  Readln(entrada);
+
+
+  compactada := CompactarString(entrada);
+  Writeln('Resultado da compactação: ', compactada);
+  Readln; // Aguarda pressionar Enter antes de fechar a janela
+end.
+
+
+
+
+  
+
+
+Questão 3)
+Resposta utilizando a linguagem DELPHI
+program AnaliseNumeros;
+
+
+{$APPTYPE CONSOLE}
+
+
+uses
+  SysUtils;
+
+
+const
+  MaxArraySize = 1000;
+
+
+var
+  // Vetor que armazenará os números lidos
+  numeros: array [1..MaxArraySize] of Integer;
+  // Variáveis auxiliares para cálculos e análise
+  numLidos, maior, menorImpar, totalNumeros, somaNumeros: Integer;
+  // Vetor dinâmico para armazenar a quantidade de ocorrências de cada número
+  numOcorrencias: array of Integer;
+  numero: Integer;
+
+
+// Inicializa o vetor de ocorrências com zeros
+procedure InicializarArrays;
+var
+  i: Integer;
+begin
+  // Define o tamanho do vetor dinâmico
+  SetLength(numOcorrencias, MaxArraySize + 1);
+  // Inicializa todas as posições do vetor com zero
+  for i := Low(numOcorrencias) to High(numOcorrencias) do
+    numOcorrencias[i] := 0;
+end;
+
+begin
+  // Inicializa vetores e variáveis
+  InicializarArrays;
+  numLidos := 0;
+  totalNumeros := 0;
+  somaNumeros := 0;
+  maior := -MaxInt;
+  menorImpar := MaxInt;
+
+
+  WriteLn('Digite números positivos. Digite 0 para encerrar.');
+
+
+  repeat
+    Write('Digite um número: ');
+    ReadLn(numero);
+
+
+    if numero = 0 then
+      Break;
+
+
+    // Contabiliza número lido
+    numLidos := numLidos + 1;
+    // Armazena o número no vetor
+    numeros[numLidos] := numero;
+
+
+    // Verifica e atualiza o maior número
+    if numero > maior then
+      maior := numero;
+
+
+    // Verifica e atualiza o menor número ímpar
+    if (numero mod 2 <> 0) and (numero < menorImpar) then
+      menorImpar := numero;
+
+
+    // Guarda os valores para o cálculo da média.
+    totalNumeros := totalNumeros + 1;
+    somaNumeros := somaNumeros + numero;
+
+
+    // Contabiliza a ocorrência do número no vetor de ocorrências
+    if (numero >= Low(numOcorrencias)) and (numero <= High(numOcorrencias)) then
+      numOcorrencias[numero] := numOcorrencias[numero] + 1;
+  until false;
+
+
+  // Exibe o relatório
+  WriteLn('Relatório:');
+  WriteLn('a) Quantidade de números lidos: ', numLidos);
+  WriteLn('b) Maior número lido: ', maior);
+
+
+  if numLidos > 0 then
+  begin
+    // Calcula e exibe a média
+    WriteLn('c) Média dos números lidos: ', somaNumeros / totalNumeros:0:2);
+
+
+    // Verifica e exibe o menor número ímpar, se houver
+    if menorImpar <> MaxInt then
+      WriteLn('d) Menor número ímpar lido: ', menorImpar);
+
+
+    // Exibe a ocorrência de cada número
+    for numero := Low(numOcorrencias) to High(numOcorrencias) do
+    begin
+      if numOcorrencias[numero] > 0 then
+        WriteLn('e) O número ', numero, ' ocorreu ', numOcorrencias[numero], ' vezes.');
+    end;
+    Readln;
+  end
+  else
+  begin
+    WriteLn('Não foram lidos números.');
+  end;
+
+
+end.
+
+
+
+Questão 4)
+Resposta utilizando a linguagem Delphi
+
+program AnalisarArquivo;
+
+
+{$APPTYPE CONSOLE}
+
+
+uses
+  SysUtils;
+
+
+// Função para contar vogais em uma string
+function ContarVogais(const texto: string): Integer;
+var
+  i: Integer;
+begin
+  Result := 0;
+  for i := 1 to Length(texto) do
+  begin
+    if CharInSet(UpCase(texto[i]), ['A', 'E', 'I', 'O', 'U']) then
+      Inc(Result);
+  end;
+end;
+
+
+// Função para contar consoantes em uma string (excluindo espaços)
+function ContarConsoantes(const texto: string): Integer;
+var
+  i: Integer;
+begin
+  Result := 0;
+  for i := 1 to Length(texto) do
+  begin
+    // Verifica se o caractere é uma letra (B-Z) e não é espaço em branco
+    if CharInSet(UpCase(texto[i]), ['B'..'Z']) and (texto[i] <> ' ') then
+      Inc(Result);
+  end;
+end;
+
+
+var
+  arquivo: TextFile;
+  nomeArquivo, linha, linhaMaisVogais, linhaMaisConsoantes: string;
+  maxVogais, maxConsoantes, vogais, consoantes: Integer;
+begin
+  Write('Digite o nome do arquivo (.txt): ');
+  ReadLn(nomeArquivo);
+
+
+  try
+    AssignFile(arquivo, nomeArquivo);
+    Reset(arquivo);
+
+
+    maxVogais := -1;
+    maxConsoantes := -1;
+
+
+    while not Eof(arquivo) do
+    begin
+      ReadLn(arquivo, linha);
+
+
+      // Conta as vogais e consoantes na linha atual
+      vogais := ContarVogais(linha);
+      consoantes := ContarConsoantes(linha);
+
+
+      // Verifica se a contagem de vogais é maior do que o máximo anterior
+      if vogais > maxVogais then
+      begin
+        maxVogais := vogais;
+        linhaMaisVogais := linha;
+      end;
+
+
+      // Verifica se a contagem de consoantes é maior ou igual ao máximo anterior
+      if consoantes >= maxConsoantes then
+      begin
+        maxConsoantes := consoantes;
+        linhaMaisConsoantes := linha;
+      end;
+    end;
+
+
+    // Exibe os resultados
+    WriteLn('Linha com mais vogais: ', linhaMaisVogais);
+    WriteLn('Linha com mais consoantes: ', linhaMaisConsoantes);
+
+
+    CloseFile(arquivo);
+  except
+    on E: Exception do
+      WriteLn('Erro ao ler o arquivo: ', E.Message);
+  end;
+  Readln;
+end.
+
+
+        
+
+
+Questão 5)
+SOLUÇÃO UTILIZANDO MYSQL (workbench)
+
+-- Criação da tabela CLIENTES
+CREATE TABLE CLIENTES (
+    CPF VARCHAR(11) PRIMARY KEY,
+    NOME VARCHAR(100),
+    IDADE INT
+);
+
+
+-- Criação da tabela TELEFONES
+CREATE TABLE TELEFONES (
+    CPF_CLIENTE VARCHAR(11),
+    DDD VARCHAR(3),
+    TELEFONE VARCHAR(10),
+    PRIMARY KEY (CPF_CLIENTE),
+    FOREIGN KEY (CPF_CLIENTE) REFERENCES CLIENTES(CPF)
+);
+
+
+
+
+Questão 6)
+SOLUÇÃO UTILIZANDO MYSQL (workbench)
+
+  
+SELECT NOME
+FROM CLIENTES
+WHERE IDADE >= 22
+ORDER BY IDADE ASC;
+
+
+
+Questão 7)
+SOLUÇÃO UTILIZANDO MYSQL (workbench)
+
+SELECT c.NOME, COUNT(t.CPF_CLIENTE) AS Quantidade_de_Telefones
+FROM CLIENTES c
+JOIN TELEFONES t ON c.CPF = t.CPF_CLIENTE
+GROUP BY c.NOME
+HAVING Quantidade_de_Telefones >= 1;
+
+
+
+  
+
+
+Questão 8)
+  SOLUÇÃO UTILIZANDO MYSQL (workbench)
+  
+-- Primeiro deleta da tabela de telefones
+DELETE FROM TELEFONES
+WHERE CPF_CLIENTE IN (SELECT CPF FROM CLIENTES WHERE NOME LIKE '% Santos');
+-- Depois deleta da tabela de clientes--
+DELETE FROM CLIENTES
+WHERE NOME LIKE '% Santos';
