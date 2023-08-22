@@ -75,6 +75,8 @@ end.
 
 QUESTÃO 2)
 Resposta utilizando a linguagem DELPHI
+
+
 program Project1;
 
 uses
@@ -127,6 +129,8 @@ end.
 
 Questão 3)
 Resposta utilizando a linguagem DELPHI
+
+
 program AnaliseNumeros;
 
 
